@@ -26,11 +26,6 @@ public class Ship {
     
     public void setShip(int x, int y, boolean orientation, Grid board) {
         System.out.println("***This ship's hp = " + hp + "***");
-
-        // check if the user already set this ship, if
-        // so, then clear the previous ship to replace it
-        //if (isSet)
-            //clearShip(board);
         
         // if orientation is vertical
         if (orientation) {

@@ -32,6 +32,7 @@ public class Grid {
                 // check if ship is going out-of-bounds
                 if ((y + i) > 9) {
                     System.out.println("ship reached out of bounds: y = " + (y + i));
+                    Battlefield.text.append("ship is out-of bounds; try again\n");
                     return false;
                 }
                 
@@ -53,6 +54,7 @@ public class Grid {
                     if (!sameShip) {
                         // cell is already occupied; not valid
                         System.out.println("space is already occupied: " + x + " " + (y + i));
+                        Battlefield.text.append("space" + x + " " + (y + i) + " is already occupied!\n");
                         return false;
                     }
                 }
@@ -65,6 +67,7 @@ public class Grid {
                 if ((x + i) > 9) {
                     // ship is going out-of-bounds
                     System.out.println("ship reached out of bounds: x = " + (x + i));
+                    Battlefield.text.append("ship is out-of bounds; try again\n");
                     return false;
                 }
                 
@@ -86,6 +89,7 @@ public class Grid {
                     if (!sameShip) {
                         // cell is already occupied; not valid
                         System.out.println("space is already occupied: " + (x + i) + " " + y);
+                        Battlefield.text.append("space" + (x + i) + " " + y + " is already occupied!\n");
                         return false;
                     }
                 }

@@ -21,21 +21,5 @@ public class ShipPart {
     public int x = - 1, y = -1;
 
     public ShipPart() { }
-    // I'm not sure yet how to implement this. Either the individual ship
-    // parts are *manually* picked (OK for beta run) in which case I would
-    // utilize the below constructor and add() each to the overall Ship,
-    // or the individual parts are *simultaneously* chosen (equivalent to 
-    // placing a ship on the board with set pairs) and I would add those
-    // as it is placed (do some increment of ASCII and numbers) and
-    // completely do away with this subclass...
-
-    // and to do the above ASCII stuff, I will have to take into account
-    // of the ship's orientation for proper calculations.
-
-    // to start off with, I will implement the *first* option of manually
-    // typing the values for the ordered pairs to get the program functioning.
-    // Later, and ultimately, when I add the visual components, I will changed
-    // this implementation to the *second* option of simultaneous calculation
-    // of ordered pairs.
 
 }

@@ -5,6 +5,7 @@
  */
 package battleship;
 
+import UI.Battlefield;
 import core.Game;
 
 /**
@@ -18,8 +19,19 @@ public class Battleship {
      */
     public static void main(String[] args) {
         System.out.println("Welcome to Battleship!");
-		
+        
         // start new game
         Game game = new Game();
     }
 }
+
+/*
+- RECOLOR THE REPLACING OF USER SHIPS [DONE]-
+- DIALOG BOX FOR GAME UPDATES [DONE]- (pick actual text to print)
+- FIX AUTO SCROLL FOR THE ABOVE [DONE]-
+- WINDOW SIZE [EHH]-
+- RESET MENU OPTION [DONE]-
+- FIX UI GRID
+- ADD AI
+- PLZ CLEAN UP CODE, DERP
+*/

@@ -22,6 +22,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -36,6 +38,9 @@ public class Battlefield {
     Player player;
     Set<Integer> selectedShips = new HashSet<>();
     BattleshipUI ui;
+    JPanel textbox;
+    public static JTextArea text;
+    JScrollPane scroll;
     int shipNum = -1;
     
     public Battlefield(boolean dontInitialize) {}
@@ -63,6 +68,7 @@ public class Battlefield {
             // user has to pick a ship first
             if (shipNum == -1) {
                 System.out.println("Pick a ship first!");
+                Battlefield.appendAndScroll("Select a ship first!\n");
             }
             else 
             {
@@ -93,6 +99,7 @@ public class Battlefield {
                                 if (selectedShips.contains(shipNum)) 
                                 {
                                     System.out.println("Ship #" + (shipNum + 1) + " is already in use");
+                                    Battlefield.appendAndScroll("Ship #" + (shipNum + 1) + " is already in use\n");
                                     // reset the old ship's position and bg color
                                     resetShip(player.ships[shipNum], player.board);
                                 }
@@ -126,6 +133,7 @@ public class Battlefield {
                                 if (selectedShips.contains(shipNum)) 
                                 {
                                     System.out.println("Ship #" + (shipNum + 1) + " is already in use");
+                                    Battlefield.appendAndScroll("Ship #" + (shipNum + 1) + " is already in use\n");
                                     // reset the old ship's position and bg color
                                     resetShip(player.ships[shipNum], player.board);
                                 }
@@ -185,8 +193,8 @@ public class Battlefield {
             }
         }
         
-        Dimension minDimAttempt = new Dimension(375, 375);
-        Dimension perDimAttempt = new Dimension(375, 375);
+        Dimension minDimAttempt = new Dimension(375, 325);
+        Dimension perDimAttempt = new Dimension(300, 300);
         battlefield.setMinimumSize(minDimAttempt);
         battlefield.setPreferredSize(perDimAttempt);
         battlefield.setBorder(BorderFactory.createTitledBorder("Battlefield"));
@@ -208,11 +216,27 @@ public class Battlefield {
         start.addActionListener(ui. new Start());
         ships.add(start);
         
-        minDimAttempt = new Dimension(100, 325);
-        perDimAttempt = new Dimension(100, 325);
+        minDimAttempt = new Dimension(80, 325);
+        perDimAttempt = new Dimension(80, 300);
         ships.setMinimumSize(minDimAttempt);
         ships.setPreferredSize(perDimAttempt);
         ships.setBorder(BorderFactory.createTitledBorder("Ships"));
+        
+        // text dialog box
+        textbox = new JPanel();
+        
+        text = new JTextArea("- GAME UPDATES -\n\n");
+        text.setEditable(false);
+        textbox.add(text);
+        
+        textbox.setPreferredSize(new Dimension(200, 300));
+        textbox.setMinimumSize(new Dimension(200, 300));
+        textbox.setBorder(BorderFactory.createTitledBorder("Updates"));
+        
+        // make textbox scrollable
+        scroll = new JScrollPane(text);
+        scroll.setPreferredSize(new Dimension(190, 270));
+        textbox.add(scroll);
     }
     
     private void resetShip(Ship ship, Grid grid) {
@@ -221,10 +245,11 @@ public class Battlefield {
             // set ship's previous spaces to false
             int x = ship.part[i].x;
             int y = ship.part[i].y;
+            Battlefield.appendAndScroll("*(" + x + ", " + y + ")\n");
             grid.grid[x][y] = false;
             
             // change color on UI board
-            cells[ship.part[i].x][ship.part[i].y].setBackground(Color.white);
+            cells[ship.part[i].x][ship.part[i].y].setBackground(Color.gray);
             
             System.out.println("%%CLEARED: " + x + y);
         }
@@ -235,5 +260,13 @@ public class Battlefield {
             cells[x][y].setBackground(Color.RED);
         else
             cells[x][y].setBackground(Color.WHITE);
+    }
+    
+    public static void appendAndScroll(String str) {
+       // add text to textarea box
+       text.append(str);
+       
+       // autoscroll the textarea
+       text.setCaretPosition(text.getText().length());
     }
 }

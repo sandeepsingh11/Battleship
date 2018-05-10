@@ -36,7 +36,7 @@ public class BattleshipUI implements ActionListener{
     JMenu gameMenu;
     JMenuItem newGame;
     JMenuItem exitGame;
-    Player player;
+    Player player, player2;
     Battlefield lowerBoard;
     Radar upperBoard;
     Game game;
@@ -72,10 +72,11 @@ public class BattleshipUI implements ActionListener{
             
                 // start the game!
                 System.out.println("START GAME!");
+                Battlefield.text.append("* START GAME! *\n\n");
                 Runnable r = new Start();
                 Thread t1 = new Thread(r);
                 t1.start();
-                // goes to run() in a new thread
+                // v v  goes to run() in a new thread  v v
         }
 
         @Override
@@ -89,11 +90,20 @@ public class BattleshipUI implements ActionListener{
     @Override
     public void actionPerformed (ActionEvent e) {
         if (e.getActionCommand().equals("Exit Game")) {
+            // exit option
             int close = JOptionPane.showConfirmDialog(null, "Confirm to exit Battleship?", 
                     "Exit game?", JOptionPane.YES_NO_OPTION);
             
             if (close == YES_OPTION)
                 System.exit(0);
+        }
+        else if (e.getActionCommand().equals("New Game")) {
+            // reset option
+            int reset = JOptionPane.showConfirmDialog(null, "Do you really want to reset the game?",
+                    "Reset game?", JOptionPane.YES_NO_OPTION);
+            
+            if (reset == YES_OPTION)
+                resetGame();
         }
     }
     
@@ -103,6 +113,7 @@ public class BattleshipUI implements ActionListener{
         gameMenu = new JMenu("Game");
         newGame = new JMenuItem("New Game");
         gameMenu.add(newGame);
+        newGame.addActionListener(this);
         exitGame = new JMenuItem("Exit Game");
         exitGame.addActionListener(this);
         gameMenu.add(exitGame);
@@ -127,6 +138,7 @@ public class BattleshipUI implements ActionListener{
         // set lower panel (battlefield)
         lowerBoard = new Battlefield(player, this);
         
+        panel.add(lowerBoard.textbox, BorderLayout.WEST);
         panel.add(lowerBoard.battlefield, BorderLayout.CENTER);
         panel.add(lowerBoard.ships, BorderLayout.EAST);
         
@@ -155,11 +167,55 @@ public class BattleshipUI implements ActionListener{
             for (int col = 0; col < 10; col++) {
                 lowerBoard.cells[row][col].setEnabled(false);
                 upperBoard.cells[row][col].setEnabled(true);
-                //upperBoard.cells[row][col].setBackground(Color.white);
             }
         }
         
         System.out.println("->done with readyToPlay()");
     }
     
+    public void resetGame() {
+        player2 = game.getP2();
+        
+        for (int row = 0; row < 10; row++) {
+            for (int col = 0; col < 10; col++) {
+                // reset default colors, disable top board, and enable bottom board
+                lowerBoard.cells[row][col].setEnabled(true);
+                lowerBoard.cells[row][col].setBackground(Color.GRAY);
+                upperBoard.cells[row][col].setEnabled(false);
+                upperBoard.cells[row][col].setBackground(Color.GRAY);
+                
+                // set cells to false
+                player.board.grid[row][col] = false;
+                player.board.upperBoard[row][col] = false;
+                
+                player2.board.grid[row][col] = false;
+                player2.board.upperBoard[row][col] = false;
+            }
+        }
+        
+        for (int i = 0; i < 5; i++) {
+            for (int k = 0; k < player.ships[i].size; k++) {
+                // reset ships
+                player.ships[i].part[k].x = -1;
+                player.ships[i].part[k].y = -1;
+                
+                player2.ships[i].part[k].x = -1;
+                player2.ships[i].part[k].y = -1;
+            }
+        }
+        lowerBoard.selectedShips.clear();
+        
+        // enable ship buttons
+        for (int i = 0; i < 5; i++) {
+            lowerBoard.shipBtn[i].setEnabled(true);
+            lowerBoard.shipBtn[i].setBackground(new JButton().getBackground());
+        }
+        
+        // enable start button
+        lowerBoard.start.setEnabled(true);
+        
+        // clear text area
+        Battlefield.text.setText("");
+        Battlefield.appendAndScroll("* Game reset! *\n\n");
+    }
 }

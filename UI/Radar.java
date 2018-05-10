@@ -31,7 +31,6 @@ public class Radar  {
     JPanel grid, radar, alphaPanel, numPanel;
     static JButton[][] cells;
     JLabel[] letters, numbers;
-    Player player;
     ShipPart orderedPair;
     boolean fired;
     
