@@ -203,12 +203,17 @@ public class BattleshipUI implements ActionListener{
                 player2.ships[i].part[k].y = -1;
             }
         }
-        lowerBoard.selectedShips.clear();
         
-        // enable ship buttons
+        // clear record-keepers <sets>
+        lowerBoard.selectedShips.clear();
+        upperBoard.firedCells.clear();
+        
+        // enable ship buttons and reset color
         for (int i = 0; i < 5; i++) {
             lowerBoard.shipBtn[i].setEnabled(true);
             lowerBoard.shipBtn[i].setBackground(new JButton().getBackground());
+            
+            upperBoard.enemyShipLabel[i].setBackground(Color.WHITE);
         }
         
         // enable start button

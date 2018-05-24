@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package core;
+
+import UI.Battlefield;
+
 /**
  *
  * @author Sandeep
@@ -25,7 +28,6 @@ public class Ship {
     }
     
     public void setShip(int x, int y, boolean orientation, Grid board) {
-        System.out.println("***This ship's hp = " + hp + "***");
         
         // if orientation is vertical
         if (orientation) {
@@ -48,7 +50,6 @@ public class Ship {
     }
     
     public void printLocation() {
-        System.out.println("This ship spans:");
         for (int i = 0; i < size; i++) {
             System.out.println("(" + (part[i].x) + ", "
                                    + (part[i].y) + ")");
@@ -56,7 +57,6 @@ public class Ship {
     }
     
     public boolean hit(int x, int y) {
-        System.out.println("in hit()...");
         
         for (int i = 0; i < size; i++) {
             if (part[i].x == x) {
@@ -75,6 +75,7 @@ public class Ship {
     public void isSunk() {
         if (hp == 0) {
             System.out.println("You sunk a ship!");
+            Battlefield.appendAndScroll("*A ship has sunk!*\n");
             sunkenShip = true;
         }
     }

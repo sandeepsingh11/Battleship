@@ -5,7 +5,9 @@
  */
 package core;
 
+import UI.Battlefield;
 import UI.Radar;
+import java.awt.Color;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -84,28 +86,58 @@ public class Player {
         }
     }
     
-    public void fire(int x, int y, boolean human) {      
+    public void fire(int x, int y, boolean human, AI ai) {      
         if (board.grid[x][y]){
             System.out.println("->It's a hit! " + x + " " + y);
-                    
+            
+            // if not active, activate ai data (only on p2's turn is AI used)
+            if (!(human) && !(ai.active)) {
+                ai.active = true;
+                ai.setAI(x, y);
+            }
+            
             boolean foundDamage = false;
+            
             // go through Player's ships[] to record
             // the hit and check if the ship sunk
             for (int i = 0; i < 5; i++) {
+                
                 // if this ship has already sunk, skip it
                 if (ships[i].sunkenShip)
                     continue;
                 
                 System.out.println("ship # " + (i + 0));
                 
-                // record hit and check if it sank
+                // find which ship was hit and record hit
                 foundDamage = ships[i].hit(x, y);
                 if (foundDamage) {
-                    // if ship sank, health - 1
+                    
+                    // update AI on hit
+                    if (!(human) && (ai.active)) {
+                        
+                        ai.currentlyAt.x = x;
+                        ai.currentlyAt.y = y;
+                    }
+                    
+                    // did this hit sink a ship?
+                    // if so, health - 1
                     if (ships[i].sunkenShip) {
                         army--;
                         
+                        // clear ai data
+                        if (!(human) && (ai.active)) {
+                            ai.resetAI(ai);
+                        }
+                        
+                        // set p1 ship btn to red to indicate sunk ship
+                        if (!human)
+                            Battlefield.shipBtn[i].setBackground(Color.RED);
+                        else
+                            Radar.enemyShipLabel[i].setBackground(Color.RED);
+                            
+                        
                         System.out.println("Ships left: " + army);
+                        Battlefield.appendAndScroll("Ship " + (i + 1) + " is down\nShips left: " + army + "\n\n");
                     }
                     
                     // break once we found the hit ship
@@ -120,5 +152,11 @@ public class Player {
         
         System.out.println("->It's a miss...");
         this.board.record(x, y, false, human);
-    }    
+        
+        // update AI if previous fire was a hit but current fire is a miss.
+        // Change directions accordingly in AI class body
+        if (!(human) && (ai.active)) {
+            ai.keepGoing = false;
+        }
+    }
 }

@@ -31,9 +31,9 @@ import javax.swing.JTextArea;
  */
 public class Battlefield {
     JPanel battlefield;
-    static JButton[][] cells;
+    public static JButton[][] cells;
     JPanel ships;
-    JButton[] shipBtn;
+    public static JButton[] shipBtn;
     JButton start;
     Player player;
     Set<Integer> selectedShips = new HashSet<>();
@@ -249,7 +249,7 @@ public class Battlefield {
             grid.grid[x][y] = false;
             
             // change color on UI board
-            cells[ship.part[i].x][ship.part[i].y].setBackground(Color.gray);
+            cells[ship.part[i].x][ship.part[i].y].setBackground(Color.GRAY);
             
             System.out.println("%%CLEARED: " + x + y);
         }
