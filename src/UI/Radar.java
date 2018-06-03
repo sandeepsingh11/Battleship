@@ -5,6 +5,7 @@
  */
 package UI;
 
+import core.Game;
 import core.Player;
 import core.ShipPart;
 import java.awt.BorderLayout;
@@ -42,24 +43,31 @@ public class Radar  {
     private class radarListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            JButton cellFired = (JButton) e.getSource();
             
-            orderedPair = new ShipPart();
-            orderedPair.x = (int) cellFired.getClientProperty("x");
-            orderedPair.y = (int) cellFired.getClientProperty("y");
-            int id = (int) cellFired.getClientProperty("id");
-            
-            if ( !(firedCells.contains(id)) ) {
-                System.out.println(orderedPair.x + ", " + orderedPair.y + " selected\n"
-                        + "----->>>Set = " + firedCells);
-
-                fired = true;
-                firedCells.add(id);
+            boolean human = Game.getTurn();
+            if (human) {
+                // activate only on Player 1's turn
                 
+                JButton cellFired = (JButton) e.getSource();
+
+                orderedPair = new ShipPart();
+                orderedPair.x = (int) cellFired.getClientProperty("x");
+                orderedPair.y = (int) cellFired.getClientProperty("y");
+                int id = (int) cellFired.getClientProperty("id");
+
+                if ( !(firedCells.contains(id)) ) {
+                    System.out.println(orderedPair.x + ", " + orderedPair.y + " selected\n"
+                            + "----->>>Set = " + firedCells);
+
+                    fired = true;
+                    firedCells.add(id);
+
+                }
+                else {
+                    Battlefield.appendAndScroll("*Pick another cell\n");
+                }
             }
-            else {
-                Battlefield.appendAndScroll("*Pick another cell\n");
-            }
+            
         }
     }
     

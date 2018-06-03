@@ -18,7 +18,7 @@ import java.util.Scanner;
 public class Player {
     public Grid board;
     public Ship ships[];
-    public int army = 5;
+    private int army;
 	
     public Player() {
         board = new Grid();
@@ -28,13 +28,14 @@ public class Player {
         ships[1] = new Ship(3);
         ships[2] = new Ship(3);
         ships[3] = new Ship(4);
-        ships[4] = new Ship(5);  
+        ships[4] = new Ship(5);
+        
+        army = 5;
     }
     
     public void manualSetup(boolean human) {
         if (human) {
             // get user input
-            // ***CHECK FOR OUT-OF-BOUNDS***
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter x origin[a-j]: ");
             char xChar = scanner.next().charAt(0);
@@ -75,7 +76,7 @@ public class Player {
 
                     System.out.println("p2: " + x + " " + y + " " + vertical);
 
-                    valid = board.isValid(x, y, vertical, ships[i]);
+                    valid = board.isValid(x, y, vertical, ships[i], human);
                     if (valid)
                         ships[i].setShip(x, y, vertical, board);
                     
@@ -129,7 +130,7 @@ public class Player {
                             ai.resetAI(ai);
                         }
                         
-                        // set p1 ship btn to red to indicate sunk ship
+                        // set p1 or p2 ship btn to red to indicate sunk ship
                         if (!human)
                             Battlefield.shipBtn[i].setBackground(Color.RED);
                         else
@@ -158,5 +159,16 @@ public class Player {
         if (!(human) && (ai.active)) {
             ai.keepGoing = false;
         }
+    }
+
+    /**
+     * @param army the army to set
+     */
+    public void setArmy(int army) {
+        this.army = army;
+    }
+    
+    public int getArmy() {
+        return this.army;
     }
 }

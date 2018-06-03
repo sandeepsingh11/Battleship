@@ -24,15 +24,18 @@ public class Grid {
         upperBoard = new boolean[10][10];
     }
     
-    public boolean isValid(int x, int y, boolean orientation, Ship ship) {
+    public boolean isValid(int x, int y, boolean orientation, Ship ship, boolean human) {
         // vert orientation
         if (orientation) {
             for (int i = 0; i < ship.size; i++) {
                 
                 // check if ship is going out-of-bounds
                 if ((y + i) > 9) {
-                    System.out.println("ship reached out of bounds: y = " + (y + i));
-                    Battlefield.text.append("ship is out-of bounds; try again\n");
+                    if (human) {
+                        System.out.println("ship reached out of bounds: y = " + (y + i));
+                        Battlefield.text.append("ship is out-of bounds; try again\n");
+                    }
+                    
                     return false;
                 }
                 
@@ -45,7 +48,6 @@ public class Grid {
                         // if space occupied is from the currently selected ship
                         if ( (x == (ship.part[k].x)) && ((y + i) == (ship.part[k].y)) ) {
                             // cell occupied, BUT we are replacing this part anyways; ignore
-                            System.out.println("OBR!");
                             sameShip = true;
                         }
                     }
@@ -53,8 +55,11 @@ public class Grid {
                     // if occupied space is not this ship, then invalid placement
                     if (!sameShip) {
                         // cell is already occupied; not valid
-                        System.out.println("space is already occupied: " + x + " " + (y + i));
-                        Battlefield.text.append("space" + x + " " + (y + i) + " is already occupied!\n");
+                        if (human) {
+                            System.out.println("space is already occupied: " + x + " " + (y + i));
+                            Battlefield.text.append("space" + x + " " + (y + i) + " is already occupied!\n");
+                        }
+                        
                         return false;
                     }
                 }
@@ -66,8 +71,11 @@ public class Grid {
                 // check if ship is going out-of-bounds
                 if ((x + i) > 9) {
                     // ship is going out-of-bounds
-                    System.out.println("ship reached out of bounds: x = " + (x + i));
-                    Battlefield.text.append("ship is out-of bounds; try again\n");
+                    if (human) {
+                        System.out.println("ship reached out of bounds: x = " + (x + i));
+                        Battlefield.text.append("ship is out-of bounds; try again\n");
+                    }
+                    
                     return false;
                 }
                 
@@ -80,7 +88,6 @@ public class Grid {
                         // if space occupied is from the currently selected ship
                         if ( ((x + i) == (ship.part[k].x)) && (y == (ship.part[k].y)) ) {
                             // cell occupied, BUT we are replacing this part anyways; ignore
-                            System.out.println("OBR!");
                             sameShip = true;
                         }
                     }
@@ -88,8 +95,11 @@ public class Grid {
                     // if occupied space is not this ship, then invalid placement
                     if (!sameShip) {
                         // cell is already occupied; not valid
-                        System.out.println("space is already occupied: " + (x + i) + " " + y);
-                        Battlefield.text.append("space" + (x + i) + " " + y + " is already occupied!\n");
+                        if (human) {
+                            System.out.println("space is already occupied: " + (x + i) + " " + y);
+                            Battlefield.text.append("space" + (x + i) + " " + y + " is already occupied!\n");
+                        }
+                        
                         return false;
                     }
                 }

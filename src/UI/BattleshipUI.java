@@ -40,6 +40,8 @@ public class BattleshipUI implements ActionListener{
     Battlefield lowerBoard;
     Radar upperBoard;
     Game game;
+    Runnable r;
+    Thread thread;
     
     public BattleshipUI (Player player, Game game) {
         this.player = player;
@@ -73,15 +75,16 @@ public class BattleshipUI implements ActionListener{
                 // start the game!
                 System.out.println("START GAME!");
                 Battlefield.text.append("* START GAME! *\n\n");
-                Runnable r = new Start();
-                Thread t1 = new Thread(r);
-                t1.start();
+                
+                r = new Start();
+                thread = new Thread(r);
+                thread.start();
                 // v v  goes to run() in a new thread  v v
         }
 
         @Override
         public void run() {
-            System.out.println("in run()!");
+            System.out.println("in run()! " + thread);
             game.play(lowerBoard, upperBoard);
         }
         
@@ -110,6 +113,7 @@ public class BattleshipUI implements ActionListener{
     
     public void initCompononts() {
         // set menu bar and its components
+        
         gameMenu = new JMenu("Game");
         newGame = new JMenuItem("New Game");
         gameMenu.add(newGame);
@@ -193,17 +197,6 @@ public class BattleshipUI implements ActionListener{
             }
         }
         
-        for (int i = 0; i < 5; i++) {
-            for (int k = 0; k < player.ships[i].size; k++) {
-                // reset ships
-                player.ships[i].part[k].x = -1;
-                player.ships[i].part[k].y = -1;
-                
-                player2.ships[i].part[k].x = -1;
-                player2.ships[i].part[k].y = -1;
-            }
-        }
-        
         // clear record-keepers <sets>
         lowerBoard.selectedShips.clear();
         upperBoard.firedCells.clear();
@@ -222,5 +215,8 @@ public class BattleshipUI implements ActionListener{
         // clear text area
         Battlefield.text.setText("");
         Battlefield.appendAndScroll("* Game reset! *\n\n");
+        
+        // reset players' values
+        game.resetPlayers();
     }
 }

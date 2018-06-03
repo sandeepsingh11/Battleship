@@ -24,8 +24,8 @@ public class AI {
 
     ShipPart origin, currentlyAt;
     char direction;
-    public boolean keepGoing = true;
-    boolean active = false;
+    public boolean keepGoing;
+    boolean active, skip;
     int changeCompass = 0; // alert to change compass pairs
 
     public AI() {
@@ -34,12 +34,17 @@ public class AI {
         this.active = false;
         this.changeCompass = 0;
         this.keepGoing = true;
+        this.skip = false;
     }
 
     public void setAI(int x, int y) {
         this.origin.x = this.currentlyAt.x = x;
         this.origin.y = this.currentlyAt.y = y;
 
+        setDirection();
+    }
+    
+    void setDirection() {
         // randomly pick direction to start with
         Random rand = new Random();
         int compass = rand.nextInt(4);
@@ -61,7 +66,7 @@ public class AI {
                 break;   
         }
     }
-
+    
     public ShipPart chooseCell(AI meta) {
         boolean valChanged = false;
 
@@ -155,8 +160,12 @@ public class AI {
             
             Battlefield.appendAndScroll("***" + meta.changeCompass + "\n");
 
-        } while (valChanged);
-
+        } while (valChanged || meta.changeCompass < 20);
+        
+        // debug
+        if (meta.changeCompass > 20)
+            Battlefield.appendAndScroll("ERROR, AI IS BEING DERPY!\n\n");
+        
         return meta.currentlyAt;
     }
 
@@ -175,12 +184,15 @@ public class AI {
             }
         }
 
-        // out-of-bounds, change direction
-        if (this.changeCompass == 2) {
+        // out-of-bounds or miss, change direction
+        if (this.changeCompass == 2 || this.changeCompass == 8) {
 
             // in special cases where either the vertical or horizontal
             // direction (N & S or E % W) is used but the ship isn't
             // there, then change the directional pair
+            //
+            // 2 if one pair of directions don't work. Same for 8,
+            // but occurs in the special case
 
             if ((this.direction == 'n') || (this.direction == 's')) {
                 this.direction = 'w';
@@ -192,8 +204,12 @@ public class AI {
             }
         }
         else {
+            
+            // part of ship is hit, not this case requires AI to jump over the already-hit cell
+            if (this.changeCompass == 5)
+                skip = true;
+            
             // else just flip the directional pair
-
             switch (this.direction) {
                 case 'n':
                     this.direction = 's';
@@ -217,8 +233,31 @@ public class AI {
             }
         }
 
+        
+        // reset location to origin
         this.currentlyAt.x = this.origin.x;
         this.currentlyAt.y = this.origin.y;
+        
+        // skips over cell if special case
+        if (skip) {
+            switch (this.direction) {
+                case 'n':
+                    this.currentlyAt.y--;
+                    break;
+
+                case 's':
+                    this.currentlyAt.y++;
+                    break;
+
+                case 'e':
+                    this.currentlyAt.x++;
+                    break;
+
+                default:
+                    this.currentlyAt.x--;
+                    break;
+            }
+        }   
         
         return false;
     }
@@ -227,5 +266,6 @@ public class AI {
         meta.active = false;
         meta.changeCompass = 0;
         meta.keepGoing = true;
+        meta.skip = false;
     }
 }

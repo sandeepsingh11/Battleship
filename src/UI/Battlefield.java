@@ -90,7 +90,7 @@ public class Battlefield {
                             System.out.println("vert chosen");
                             
                             // valid if within bounds and spaces are not occupied (by a diff ship)
-                            valid = player.board.isValid(x, y, true, player.ships[shipNum]);
+                            valid = player.board.isValid(x, y, true, player.ships[shipNum], true);
                             
                             // if valid, then place ship on board
                             if (valid)
@@ -98,8 +98,6 @@ public class Battlefield {
                                 // if it's the same ship, then reset
                                 if (selectedShips.contains(shipNum)) 
                                 {
-                                    System.out.println("Ship #" + (shipNum + 1) + " is already in use");
-                                    Battlefield.appendAndScroll("Ship #" + (shipNum + 1) + " is already in use\n");
                                     // reset the old ship's position and bg color
                                     resetShip(player.ships[shipNum], player.board);
                                 }
@@ -124,7 +122,7 @@ public class Battlefield {
                             System.out.println("horiz chosen");
                             
                             // valid if within bounds and spaces are not occupied (by a diff ship)
-                            valid = player.board.isValid(x, y, false, player.ships[shipNum]);
+                            valid = player.board.isValid(x, y, false, player.ships[shipNum], true);
                             
                             // if valid, then place ship on board
                             if (valid)
@@ -132,8 +130,6 @@ public class Battlefield {
                                 // if it's the same ship, then reset
                                 if (selectedShips.contains(shipNum)) 
                                 {
-                                    System.out.println("Ship #" + (shipNum + 1) + " is already in use");
-                                    Battlefield.appendAndScroll("Ship #" + (shipNum + 1) + " is already in use\n");
                                     // reset the old ship's position and bg color
                                     resetShip(player.ships[shipNum], player.board);
                                 }
@@ -245,13 +241,10 @@ public class Battlefield {
             // set ship's previous spaces to false
             int x = ship.part[i].x;
             int y = ship.part[i].y;
-            Battlefield.appendAndScroll("*(" + x + ", " + y + ")\n");
             grid.grid[x][y] = false;
             
             // change color on UI board
             cells[ship.part[i].x][ship.part[i].y].setBackground(Color.GRAY);
-            
-            System.out.println("%%CLEARED: " + x + y);
         }
     }
     

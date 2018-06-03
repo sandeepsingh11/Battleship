@@ -14,7 +14,7 @@ import UI.Battlefield;
 public class Ship {
     public ShipPart part[];
     public int size, hp;
-    public boolean sunkenShip = false, isSet = false;
+    public boolean sunkenShip, isSet;
    
     public Ship(int size) {
         part = new ShipPart[size];
@@ -25,6 +25,9 @@ public class Ship {
         
         this.size = size;
         hp = size;
+        
+        sunkenShip = false;
+        isSet = false;
     }
     
     public void setShip(int x, int y, boolean orientation, Grid board) {

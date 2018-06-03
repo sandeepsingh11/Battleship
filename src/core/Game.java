@@ -24,16 +24,17 @@ import static javax.swing.SwingUtilities.isEventDispatchThread;
 public class Game{
     private Player p1;
     private Player p2;
-    BattleshipUI battleship;
+    BattleshipUI UI;
     ShipPart orderedPair;
     public static AI ai;
+    private static boolean human;
     
 
     public Game() {
         p1 = new Player();
         p2 = new Player();
         
-        battleship = new BattleshipUI(getP1(), this);
+        UI = new BattleshipUI(getP1(), this);
 
         //playManual();
     }
@@ -45,10 +46,10 @@ public class Game{
         getP1().manualSetup(true);
         getP2().manualSetup(false);
 
-        boolean human = true;
+        human = true;
         
         // play until one if the player's health reaches zero
-        while (getP1().army > 0 && getP2().army > 0) {
+        while (getP1().getArmy() > 0 && getP2().getArmy() > 0) {
             // p1's turn
             if (human) {
                 Scanner scanner = new Scanner(System.in);
@@ -74,22 +75,21 @@ public class Game{
             }
         }
         
-        if (getP1().army == 0)
+        if (getP1().getArmy() == 0)
             System.out.println("Player 2 wins!");
         else
             System.out.println("Player 1 wins!");
     }
     
     public void play(Battlefield battlefield, Radar radar) {
-        System.out.println("MADE IT!!!");
         // set up CPU's ships
         getP2().manualSetup(false);
         ai = new AI();
         
-        boolean human = true;
+        human = true;
         
         // play until one of the players' health reaches zero
-        while (getP1().army > 0 && getP2().army > 0) {
+        while (getP1().getArmy() > 0 && getP2().getArmy() > 0) {
 
             // p1's turn
             if (human) {
@@ -157,7 +157,7 @@ public class Game{
         
         // some player reached zero, end of game
         int playAgain;
-        if (getP1().army == 0)
+        if (getP1().getArmy() == 0)
         {
             Battlefield.appendAndScroll("Player 2 wins!");
             playAgain = JOptionPane.showConfirmDialog(null, "Shucks, P2 won...\nPlay again?", 
@@ -178,7 +178,7 @@ public class Game{
                     "Reset game?", JOptionPane.YES_NO_OPTION);
             
             if (reset == YES_OPTION)
-                battleship.resetGame();
+                UI.resetGame();
         }
         else
         {
@@ -189,6 +189,14 @@ public class Game{
             if (close == YES_OPTION)
                 System.exit(0);
         }
+    }
+    
+    public void resetPlayers() {
+        p1 = null;
+        p1 = new Player();
+        
+        p2 = null;
+        p2 = new Player();
     }
 
     /**
@@ -203,5 +211,9 @@ public class Game{
      */
     public Player getP2() {
         return p2;
+    }
+    
+    public static boolean getTurn() {
+        return human;
     }
 }

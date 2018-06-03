@@ -6,6 +6,7 @@
 package battleship;
 
 import UI.Battlefield;
+import UI.BattleshipUI;
 import core.Game;
 
 /**
@@ -20,7 +21,7 @@ public class Battleship {
     public static void main(String[] args) {
         System.out.println("Welcome to Battleship!");
         
-        // start new game
+        // set up new game
         Game game = new Game();
     }
 }
@@ -38,9 +39,12 @@ public class Battleship {
 
 - ADD AI [PRETTY GOOD ACTUALLY TO FINISH SKINKING A SHIP]-
 - P2 IS NOT SELECTING MY SHIPS FOR SOME REASON [DONE]- (weird distribution though...)
-- FUNC OF SELECTING ANOTHER CELL HAPPENS IF YOU MISCLICK DURING P2'S TURN
+- FUNC OF SELECTING ANOTHER CELL HAPPENS IF YOU MISCLICK DURING P2'S TURN (fix in radar...)
+- FIX AI FOR WHEN SHIPS ARE TOGETHER [EHH, GETTING THERE]-
 
-- P2 PUTS DUPLICATE SHIPS (5 TOTAL, BUT NOT RIGHT SIZE) LIKE 2 #1'S, 2 #4'S, 1 #5
+- P2 SHIPS ARE PLACED CLOSE PRETTY TOGETHER (part of the psuedo random?)
+
+- WHEN RESET, MAKE SURE TO RESET *ALL* VALS; BUTTONS DONT TURN RED WHEN SUNK [DONE]-
 
 - HELP MENU?
 
