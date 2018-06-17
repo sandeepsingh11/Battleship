@@ -140,7 +140,7 @@ public class BattleshipUI implements ActionListener{
         panel.add(upperBoard.radar, BorderLayout.NORTH);
         
         // set lower panel (battlefield)
-        lowerBoard = new Battlefield(player, this);
+        lowerBoard = new Battlefield(game, this);
         
         panel.add(lowerBoard.textbox, BorderLayout.WEST);
         panel.add(lowerBoard.battlefield, BorderLayout.CENTER);

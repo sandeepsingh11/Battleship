@@ -37,6 +37,7 @@ public class Battlefield {
     JButton start;
     Player player;
     Set<Integer> selectedShips = new HashSet<>();
+    Game game;
     BattleshipUI ui;
     JPanel textbox;
     public static JTextArea text;
@@ -45,8 +46,8 @@ public class Battlefield {
     
     public Battlefield(boolean dontInitialize) {}
     
-    public Battlefield(Player player, BattleshipUI ui) {
-        this.player = player;
+    public Battlefield(Game game, BattleshipUI ui) {
+        this.game = game;
         this.ui = ui;
         
         initComp();
@@ -76,6 +77,8 @@ public class Battlefield {
                 int x = (int) cell.getClientProperty("x");
                 int y = (int) cell.getClientProperty("y");
                 System.out.println("selected cell: (" + x + ", " + y + ")");
+                
+                player = game.getP1();
 
                 // choose vertical or horizontal orientation for the
                 // ship placement. Then set the ship on the board

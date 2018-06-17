@@ -47,6 +47,7 @@ public class Radar  {
             boolean human = Game.getTurn();
             if (human) {
                 // activate only on Player 1's turn
+                // check if the selected cell has already been clicked on
                 
                 JButton cellFired = (JButton) e.getSource();
 
@@ -62,6 +63,7 @@ public class Radar  {
                     fired = true;
                     firedCells.add(id);
 
+                    //Battlefield.appendAndScroll("@ @ @ -WHOOPS!- @ @ @\n");
                 }
                 else {
                     Battlefield.appendAndScroll("*Pick another cell\n");

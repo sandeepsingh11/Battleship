@@ -33,7 +33,7 @@ public class Grid {
                 if ((y + i) > 9) {
                     if (human) {
                         System.out.println("ship reached out of bounds: y = " + (y + i));
-                        Battlefield.text.append("ship is out-of bounds; try again\n");
+                        Battlefield.text.append("ship is out-of-bounds; try again\n");
                     }
                     
                     return false;
@@ -73,7 +73,7 @@ public class Grid {
                     // ship is going out-of-bounds
                     if (human) {
                         System.out.println("ship reached out of bounds: x = " + (x + i));
-                        Battlefield.text.append("ship is out-of bounds; try again\n");
+                        Battlefield.text.append("ship is out-of-bounds; try again\n");
                     }
                     
                     return false;

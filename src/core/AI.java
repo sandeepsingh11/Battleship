@@ -160,7 +160,7 @@ public class AI {
             
             Battlefield.appendAndScroll("***" + meta.changeCompass + "\n");
 
-        } while (valChanged || meta.changeCompass < 20);
+        } while (valChanged && meta.changeCompass < 20);
         
         // debug
         if (meta.changeCompass > 20)
