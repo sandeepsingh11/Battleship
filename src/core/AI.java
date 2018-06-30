@@ -20,19 +20,20 @@ public class AI {
     // RECORD CURRENTLYAT DATA [DONE]-
     // CALC CHANGECOMPASS [DONE]-
     // INITIAL DIRECTION [DONE]-
-    // WHAT IF SHIPS ARE PLACED TOGETHER???????????????? (STOP AFTER 5 MOVES?)
+    // WHAT IF SHIPS ARE PLACED TOGETHER [DONE]-
 
     ShipPart origin, currentlyAt;
     char direction;
     public boolean keepGoing;
     boolean active, skip;
-    int changeCompass = 0; // alert to change compass pairs
+    int skipInteration = 0, changeCompass = 0; // alert to change compass pairs
 
     public AI() {
         this.origin = new ShipPart();
         this.currentlyAt = new ShipPart();
         this.active = false;
         this.changeCompass = 0;
+        this.skipInteration = 0;
         this.keepGoing = true;
         this.skip = false;
     }
@@ -160,10 +161,10 @@ public class AI {
             
             Battlefield.appendAndScroll("***" + meta.changeCompass + "\n");
 
-        } while (valChanged && meta.changeCompass < 20);
+        } while (valChanged && meta.changeCompass < 30);
         
         // debug
-        if (meta.changeCompass > 20)
+        if (meta.changeCompass > 30)
             Battlefield.appendAndScroll("ERROR, AI IS BEING DERPY!\n\n");
         
         return meta.currentlyAt;
@@ -185,7 +186,7 @@ public class AI {
         }
 
         // out-of-bounds or miss, change direction
-        if (this.changeCompass == 2 || this.changeCompass == 8) {
+        if ( this.changeCompass == ((skipInteration * 6) + 2) ) { // 2, 8, 14, 20...
 
             // in special cases where either the vertical or horizontal
             // direction (N & S or E % W) is used but the ship isn't
@@ -206,8 +207,10 @@ public class AI {
         else {
             
             // part of ship is hit, not this case requires AI to jump over the already-hit cell
-            if (this.changeCompass == 5)
+            if (this.changeCompass == ((skipInteration * 6) + 5) ) { // 5, 11, 17, 23...
                 skip = true;
+                skipInteration++;
+            }
             
             // else just flip the directional pair
             switch (this.direction) {
@@ -242,19 +245,19 @@ public class AI {
         if (skip) {
             switch (this.direction) {
                 case 'n':
-                    this.currentlyAt.y--;
+                    this.currentlyAt.y -= skipInteration;
                     break;
 
                 case 's':
-                    this.currentlyAt.y++;
+                    this.currentlyAt.y += skipInteration;
                     break;
 
                 case 'e':
-                    this.currentlyAt.x++;
+                    this.currentlyAt.x += skipInteration;
                     break;
 
                 default:
-                    this.currentlyAt.x--;
+                    this.currentlyAt.x -= skipInteration;
                     break;
             }
         }   
@@ -265,6 +268,7 @@ public class AI {
     protected void resetAI(AI meta) {
         meta.active = false;
         meta.changeCompass = 0;
+        meta.skipInteration = 0;
         meta.keepGoing = true;
         meta.skip = false;
     }
